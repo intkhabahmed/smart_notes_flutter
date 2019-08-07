@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:smartnotes/utils/Constanta.dart';
+import 'package:smartnotes/utils/constants.dart';
+import 'package:smartnotes/utils/helper_widgets.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -67,23 +68,10 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     if (_tabController.index != 0) {
       _tabController.animateTo(0);
       return false;
-    } else {
-      return showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Text('Are you sure want to quit the app?'),
-          actions: <Widget>[
-            FlatButton(
-              onPressed: () => Navigator.of(context).pop(false),
-              child: Text('No'),
-            ),
-            FlatButton(
-              onPressed: () => Navigator.of(context).pop(true),
-              child: Text('Yes'),
-            ),
-          ],
-        ),
-      );
     }
+    return showDialog(
+      context: context,
+      builder: (context) => HelperWidgets.getAlertDialog(context),
+    );
   }
 }

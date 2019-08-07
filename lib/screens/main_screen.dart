@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:smartnotes/fragments/about.dart';
+import 'package:smartnotes/fragments/help.dart';
 import 'package:smartnotes/fragments/home.dart';
+import 'package:smartnotes/fragments/settings.dart';
 import 'package:smartnotes/fragments/trash.dart';
+import 'package:smartnotes/utils/constants.dart';
 
 class MainScreen extends StatefulWidget {
   MainScreen({Key key, this.title}) : super(key: key);
@@ -11,26 +15,34 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  var selectedNavItem = "Home";
+  var selectedNavItem = Constants.HOME;
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-        elevation: selectedNavItem == "Home" ? 0.0 : AppBar().elevation,
+    return WillPopScope(
+      onWillPop: _onBackPressed,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(selectedNavItem == Constants.HOME
+              ? widget.title
+              : selectedNavItem),
+          elevation:
+              selectedNavItem == Constants.HOME ? 0.0 : AppBar().elevation,
+          actions:
+              selectedNavItem == Constants.HOME ? _createActionWidgets() : [],
+        ),
+        drawer: _makeDrawer(),
+        body: _openNavItem(),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {},
+          tooltip: 'Add',
+          child: Icon(Icons.add),
+        ), // This trailing comma makes auto-formatting nicer for build methods.
       ),
-      drawer: makeDrawer(),
-      body: openNavItem(),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        tooltip: 'Add',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 
-  makeDrawer() {
+  _makeDrawer() {
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -68,14 +80,14 @@ class _MainScreenState extends State<MainScreen> {
                 SizedBox(
                   width: 20.0,
                 ),
-                Text("Home"),
+                Text(Constants.HOME),
               ],
             ),
-            selected: selectedNavItem == "Home",
+            selected: selectedNavItem == Constants.HOME,
             onTap: () {
               Navigator.pop(context);
               setState(() {
-                selectedNavItem = "Home";
+                selectedNavItem = Constants.HOME;
               });
             },
           ),
@@ -86,14 +98,14 @@ class _MainScreenState extends State<MainScreen> {
                 SizedBox(
                   width: 20.0,
                 ),
-                Text("Trash"),
+                Text(Constants.TRASH),
               ],
             ),
-            selected: selectedNavItem == "Trash",
+            selected: selectedNavItem == Constants.TRASH,
             onTap: () {
               Navigator.pop(context);
               setState(() {
-                selectedNavItem = "Trash";
+                selectedNavItem = Constants.TRASH;
               });
             },
           ),
@@ -104,14 +116,14 @@ class _MainScreenState extends State<MainScreen> {
                 SizedBox(
                   width: 20.0,
                 ),
-                Text("Settings"),
+                Text(Constants.SETTINGS),
               ],
             ),
-            selected: selectedNavItem == "Settings",
+            selected: selectedNavItem == Constants.SETTINGS,
             onTap: () {
               Navigator.pop(context);
               setState(() {
-                selectedNavItem = "Settings";
+                selectedNavItem = Constants.SETTINGS;
               });
             },
           ),
@@ -122,14 +134,14 @@ class _MainScreenState extends State<MainScreen> {
                 SizedBox(
                   width: 20.0,
                 ),
-                Text("Help"),
+                Text(Constants.HELP),
               ],
             ),
-            selected: selectedNavItem == "Help",
+            selected: selectedNavItem == Constants.HELP,
             onTap: () {
               Navigator.pop(context);
               setState(() {
-                selectedNavItem = "Help";
+                selectedNavItem = Constants.HELP;
               });
             },
           ),
@@ -140,14 +152,14 @@ class _MainScreenState extends State<MainScreen> {
                 SizedBox(
                   width: 20.0,
                 ),
-                Text("About"),
+                Text(Constants.ABOUT),
               ],
             ),
-            selected: selectedNavItem == "About",
+            selected: selectedNavItem == Constants.ABOUT,
             onTap: () {
               Navigator.pop(context);
               setState(() {
-                selectedNavItem = "About";
+                selectedNavItem = Constants.ABOUT;
               });
             },
           ),
@@ -158,14 +170,14 @@ class _MainScreenState extends State<MainScreen> {
                 SizedBox(
                   width: 20.0,
                 ),
-                Text("Privacy Policy"),
+                Text(Constants.PRIVACY_POLICY),
               ],
             ),
-            selected: selectedNavItem == "Privacy Policy",
+            selected: selectedNavItem == Constants.PRIVACY_POLICY,
             onTap: () {
               Navigator.pop(context);
               setState(() {
-                selectedNavItem = "Privacy Policy";
+                selectedNavItem = Constants.PRIVACY_POLICY;
               });
             },
           ),
@@ -174,13 +186,50 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
-  openNavItem() {
+  _openNavItem() {
     switch (selectedNavItem) {
-      case "Home":
+      case Constants.HOME:
         return Home();
-      case "Trash":
+      case Constants.TRASH:
         return Trash();
+      case Constants.SETTINGS:
+        return Settings();
+      case Constants.HELP:
+        return Help();
+      case Constants.ABOUT:
+        return About();
+      case Constants.PRIVACY_POLICY:
+        return Settings();
       default:
     }
+  }
+
+  Future<bool> _onBackPressed() async {
+    if (selectedNavItem != Constants.HOME) {
+      setState(() {
+        selectedNavItem = Constants.HOME;
+      });
+      return false;
+    }
+    return true;
+  }
+
+  List<Widget> _createActionWidgets() {
+    return [
+      InkWell(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Icon(Icons.search),
+        ),
+        onTap: () {},
+      ),
+      InkWell(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Icon(Icons.sort),
+        ),
+        onTap: () {},
+      )
+    ];
   }
 }

@@ -1,0 +1,26 @@
+class Constants {
+  static const String APP_NAME = "Smart Notes";
+  static const String SIMPLE_NOTE = "Simple Note";
+  static const String CHECKLIST = "Checklist";
+  static const String IMAGE_NOTE = "Image Note";
+  static const String HOME = "Home";
+  static const String TRASH = "Trash";
+  static const String SETTINGS = "Settings";
+  static const String HELP = "Help";
+  static const String ABOUT = "About";
+  static const String PRIVACY_POLICY = "Privacy Policy";
+  static const String DARK_MODE = "dark_mode";
+  static const String APP_DESCRIPTION =
+      "Smart Notes is a simple and awesome notepad app. It gives you a quick and " +
+          "simple notepad editing experience when you write notes, shopping lists, " +
+          "to-do lists and image notes. Makingnotes in this app is very easy.";
+  static const String APP_FEATURES =
+      "Features: \n\nThe main features of this app are:\n\n" +
+          "1. Makes simple text note in just two clicks \n\n" +
+          "2. Take Pictures and save as a note \n\n" +
+          "3. Makes checklist notes for To-do list &amp; Shopping list. \n\n" +
+          "4. Notification reminder for the notes \n\n" +
+          "5. Search notes by Title \n\n" +
+          "6. Easy share notes via SMS, E-mail, Twitter or any other platform \n\n" +
+          "7. Sticky note memo widget (Put your notes on your home screen)";
+}
