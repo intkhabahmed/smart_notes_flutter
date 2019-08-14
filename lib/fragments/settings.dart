@@ -26,7 +26,7 @@ class _SettingsState extends State<Settings> {
               Consumer<ThemeNotifier>(
                 builder: (context, notifier, _) {
                   return Switch(
-                    value: notifier.isDarkMode,
+                    value: notifier.isDarkMode ?? false,
                     onChanged: (isOn) {
                       SharedPrefUtils.setBool(Constants.DARK_MODE, isOn)
                           .then((isDarkMode) {

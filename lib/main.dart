@@ -2,17 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:smartnotes/screens/main_screen.dart';
 import 'package:smartnotes/utils/constants.dart';
+import 'package:smartnotes/utils/db_notifier.dart';
 import 'package:smartnotes/utils/shared_pref.dart';
 import 'package:smartnotes/utils/theme_notifier.dart';
 
-void main() => runApp(MyApp());
+void main() async {
+  runApp(MyApp());
+}
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<ThemeNotifier>(
-      builder: (context) => ThemeNotifier(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<ThemeNotifier>.value(
+          value: ThemeNotifier(),
+        ),
+        ChangeNotifierProvider<DBNotifier>.value(
+          value: DBNotifier(),
+        ),
+      ],
       child: Consumer<ThemeNotifier>(
         builder: (context, themeNotifier, child) {
           SharedPrefUtils.getF(Constants.DARK_MODE).then((isDarkMode) {

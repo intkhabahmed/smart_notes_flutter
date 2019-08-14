@@ -5,6 +5,7 @@ import 'package:smartnotes/fragments/home.dart';
 import 'package:smartnotes/fragments/settings.dart';
 import 'package:smartnotes/fragments/trash.dart';
 import 'package:smartnotes/utils/constants.dart';
+import 'package:smartnotes/utils/shared_pref.dart';
 
 class MainScreen extends StatefulWidget {
   MainScreen({Key key, this.title}) : super(key: key);
@@ -16,6 +17,18 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
   var selectedNavItem = Constants.HOME;
+
+  @override
+  void initState() {
+    SharedPrefUtils.init();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    SharedPrefUtils.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,19 +46,13 @@ class _MainScreenState extends State<MainScreen> {
         ),
         drawer: _makeDrawer(),
         body: _openNavItem(),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {},
-          tooltip: 'Add',
-          child: Icon(Icons.add),
-        ), // This trailing comma makes auto-formatting nicer for build methods.
       ),
     );
   }
 
   _makeDrawer() {
     return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
+      child: Column(
         children: <Widget>[
           DrawerHeader(
             child: Padding(
@@ -73,114 +80,12 @@ class _MainScreenState extends State<MainScreen> {
             ),
             decoration: BoxDecoration(color: Colors.blue),
           ),
-          ListTile(
-            title: Row(
-              children: <Widget>[
-                Icon(Icons.home),
-                SizedBox(
-                  width: 20.0,
-                ),
-                Text(Constants.HOME),
-              ],
-            ),
-            selected: selectedNavItem == Constants.HOME,
-            onTap: () {
-              Navigator.pop(context);
-              setState(() {
-                selectedNavItem = Constants.HOME;
-              });
-            },
-          ),
-          ListTile(
-            title: Row(
-              children: <Widget>[
-                Icon(Icons.delete),
-                SizedBox(
-                  width: 20.0,
-                ),
-                Text(Constants.TRASH),
-              ],
-            ),
-            selected: selectedNavItem == Constants.TRASH,
-            onTap: () {
-              Navigator.pop(context);
-              setState(() {
-                selectedNavItem = Constants.TRASH;
-              });
-            },
-          ),
-          ListTile(
-            title: Row(
-              children: <Widget>[
-                Icon(Icons.settings),
-                SizedBox(
-                  width: 20.0,
-                ),
-                Text(Constants.SETTINGS),
-              ],
-            ),
-            selected: selectedNavItem == Constants.SETTINGS,
-            onTap: () {
-              Navigator.pop(context);
-              setState(() {
-                selectedNavItem = Constants.SETTINGS;
-              });
-            },
-          ),
-          ListTile(
-            title: Row(
-              children: <Widget>[
-                Icon(Icons.help),
-                SizedBox(
-                  width: 20.0,
-                ),
-                Text(Constants.HELP),
-              ],
-            ),
-            selected: selectedNavItem == Constants.HELP,
-            onTap: () {
-              Navigator.pop(context);
-              setState(() {
-                selectedNavItem = Constants.HELP;
-              });
-            },
-          ),
-          ListTile(
-            title: Row(
-              children: <Widget>[
-                Icon(Icons.info),
-                SizedBox(
-                  width: 20.0,
-                ),
-                Text(Constants.ABOUT),
-              ],
-            ),
-            selected: selectedNavItem == Constants.ABOUT,
-            onTap: () {
-              Navigator.pop(context);
-              setState(() {
-                selectedNavItem = Constants.ABOUT;
-              });
-            },
-          ),
-          ListTile(
-            title: Row(
-              children: <Widget>[
-                Icon(Icons.security),
-                SizedBox(
-                  width: 20.0,
-                ),
-                Text(Constants.PRIVACY_POLICY),
-              ],
-            ),
-            selected: selectedNavItem == Constants.PRIVACY_POLICY,
-            onTap: () {
-              Navigator.pop(context);
-              setState(() {
-                selectedNavItem = Constants.PRIVACY_POLICY;
-              });
-            },
-          ),
+          _buildDrawerItem(Icons.home, Constants.HOME),
+          _buildDrawerItem(Icons.delete, Constants.TRASH),
+          _buildDrawerItem(Icons.settings, Constants.SETTINGS),
+          _buildDrawerItem(Icons.help, Constants.HELP),
+          _buildDrawerItem(Icons.info, Constants.ABOUT),
+          _buildDrawerItem(Icons.security, Constants.PRIVACY_POLICY),
         ],
       ),
     );
@@ -231,5 +136,22 @@ class _MainScreenState extends State<MainScreen> {
         onTap: () {},
       )
     ];
+  }
+
+  _buildDrawerItem(IconData iconData, String itemName) {
+    return ListTile(
+      leading: Icon(iconData),
+      title: Text(
+        itemName,
+        style: TextStyle(fontSize: 18.0),
+      ),
+      selected: selectedNavItem == itemName,
+      onTap: () {
+        Navigator.pop(context);
+        setState(() {
+          selectedNavItem = itemName;
+        });
+      },
+    );
   }
 }
